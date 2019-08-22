@@ -665,6 +665,31 @@ $ chown http /srv/http
 $ exit
 ```
 
+### Xorg
+```
+TODO
+```
+
+### GUI (Openbox)
+```
+TODO
+```
+
+### Fonts
+```
+TODO
+```
+
+### Libre-Office
+```
+TODO
+```
+
+### LaTeX
+```
+TODO
+```
+
 ## 8. Install the kernel!
 
 ### Install mkinitcpio
