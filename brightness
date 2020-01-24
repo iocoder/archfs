@@ -1,0 +1,9 @@
+#!/bin/sh
+
+MAX_BRIGHT=`cat /sys/class/backlight/intel_backlight/max_brightness`
+NEW_BRIGHT=$1
+
+let ABS_BRIGHT=NEW_BRIGHT*MAX_BRIGHT/100
+
+echo $ABS_BRIGHT > /sys/class/backlight/intel_backlight/brightness
+

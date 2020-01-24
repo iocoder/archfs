@@ -8,9 +8,9 @@ sys_init() {
 
 	# set environment vars
 	export PATH=/usr/bin:/usr/local/bin
-	
-	# disable dmesg console logging
-	dmesg -n 1
+
+        # disable dmesg logging
+        dmesg -n 1
 
 	# load udev
 	udevd --daemon
@@ -21,6 +21,15 @@ sys_init() {
  
         # enable pppd
         mknod /dev/ppp c 108 0
+
+        # enable fuse
+	modprobe fuse
+
+        # wait for kvm
+	sleep 0.5
+
+        # set screen brightness
+        brightness 100
 
         # udevd time
         printf "Udevd "
@@ -47,11 +56,11 @@ sys_init() {
         uptime2
 
         # enable kvm
-	(sleep 1; chmod 666 /dev/kvm) &> /dev/null &
+	chmod 666 /dev/kvm
 
         # launch X
         chmod 666 /dev/tty7
-        su iocoder -c "sleep 1; startx -- vt7" < /dev/null &> /dev/null &
+        su raabdela -c "sleep 1; startx -- vt7" < /dev/null >& /dev/null &
 
 	# set hostname
 	hostname `cat /etc/hostname`
@@ -67,18 +76,11 @@ sys_init() {
 	wpa_supplicant -Bu -i wlp2s0 > /dev/null
 	NetworkManager
 
+        # ssh
+	/usr/bin/sshd
+
 	# virtualbox
 	vboxreload > /dev/null &
-
-        # cups
-	avahi-daemon &> /dev/null &
-	cupsd &> /dev/null &
-	
-	# sshd
-	/usr/bin/sshd &> /dev/null &
-	
-	# lighttpd
-	lighttpd -f /etc/lighttpd/lighttpd.conf &> /dev/null &
 
         # total uptime
         printf "Total "
@@ -88,9 +90,9 @@ sys_init() {
 	echo "-------------------------------------------------"
 
 	# release console
-	exec 0< /dev/null
-	exec 1> /dev/null
-	exec 2> /dev/null
+	#exec 0< /dev/null
+	#exec 1> /dev/null
+	#exec 2> /dev/null
 
 	# launch ttys
 	respawn agetty tty1 -J &
